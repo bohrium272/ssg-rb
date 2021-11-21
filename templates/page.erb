@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="/static/theme.css">
+    <link rel="stylesheet" href="/static/custom.css">
+    <title><%= @title %></title>
+    </head>
+    <body>
+    <header>
+        <nav>
+        <ul><li><strong><a href="/">A Programmer's Log</a></strong></li></ul>
+        <ul>
+            <% categories.each do |category| %>
+                <li><a href="/categories/<%= category %>" style="padding-bottom: 0px; padding-top: 0px"><%= category.capitalize %></a></li>
+            <% end %>
+        </ul>
+        </nav>
+    </header>
+    <main>
+        <hgroup>
+            <h3><%= @title %></h3>
+            <h4><%= @description %>&nbsp&nbsp|&nbsp&nbsp<%= date %></h4>
+        </hgroup>
+    	<p><%= @content %></p>
+        <footer>
+            <nav>
+              <ul>
+		<% if @tags.uniq.length > 0 %>
+                    <li>Tags: </li>
+                    <% @tags.each do |tag| %>
+		        <li><a href="/tags/<%= tag %>"><%= tag %></a></li>
+		    <% end %>
+		<% end %>
+              </ul>
+            </nav>
+        </footer>
+    </main>
+</html>
