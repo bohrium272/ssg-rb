@@ -11,36 +11,40 @@ class HTML < Redcarpet::Render::HTML
   include Rouge::Plugins::Redcarpet
 end
 
+SRC_DIR = File.expand_path('../', __FILE__)
+CONTENT_DIR = File.join(SRC_DIR, ARGV[0])
+PUBLISH_DIR = ARGV[1]
+
 class Category
   attr_reader :name, :pages
-  CATEGORY_TEMPLATE = File.read('./templates/category.erb')
+  CATEGORY_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/category.erb'))
   def initialize(name, pages)
     @name = name
     @pages = pages
   end
 
   def publish(categories)
-    FileUtils.mkdir_p("public/categories/#{@name}/")
-    File.write("public/categories/#{@name}/index.html", ERB.new(CATEGORY_TEMPLATE).result(binding))
+    FileUtils.mkdir_p(File.join(PUBLISH_DIR, "categories/#{@name}/"))
+    File.write(File.join(PUBLISH_DIR, "categories/#{@name}/index.html"), ERB.new(CATEGORY_TEMPLATE).result(binding))
   end
 end
 
 class Tag
-  TAGS_TEMPLATE = File.read('./templates/tags.erb')
+  TAGS_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/tags.erb'))
   def initialize(name, pages)
     @name = name
     @pages = pages
   end
 
   def publish(categories)
-    FileUtils.mkdir_p("public/tags/#{@name}")
-    File.write("public/tags/#{@name}/index.html", ERB.new(TAGS_TEMPLATE).result(binding))
+    FileUtils.mkdir_p(File.join(PUBLISH_DIR, "tags/#{@name}"))
+    File.write(File.join(PUBLISH_DIR, "tags/#{@name}/index.html"), ERB.new(TAGS_TEMPLATE).result(binding))
   end
 end
 
 class Page
   attr_reader :title, :description, :category, :date, :key, :path, :href, :tags, :name
-  PAGE_TEMPLATE = File.read('./templates/page.erb')
+  PAGE_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/page.erb'))
   def initialize(name, lines)
     @name = name
     @lines = lines
@@ -61,7 +65,7 @@ class Page
     fm_indices = frontmatter_indices
 
     @frontmatter = parse_frontmatter(select_content(@lines, fm_indices[0] + 1, fm_indices[1] - 1))
-    @directory = "public/categories/#{@frontmatter.fetch('category', 'Uncategorized')}/#{@name}"
+    @directory = File.join(PUBLISH_DIR, "categories/#{@frontmatter.fetch('category', 'Uncategorized')}/#{@name}")
     @path = "#{@directory}/index.html"
     @href = @directory.split('/').last(3).join('/')
     @md_content = select_content(@lines, fm_indices[1] + 1).join
@@ -72,7 +76,10 @@ class Page
     @date = @key.strftime('%A, %e %B %Y')
     @tags = @frontmatter.fetch('tags', []).map(&:strip).map
 
-    @images = Dir.glob(["content/#{@name}/*.png", "content/#{@name}/*.jpg"])
+    @images = Dir.glob([
+      "#{CONTENT_DIR}/#{@name}/*.png", 
+      "#{CONTENT_DIR}/#{@name}/*.jpg"
+    ])
   end
 
   def frontmatter_indices
@@ -90,7 +97,7 @@ class Page
 end
 
 class Site
-  INDEX_TEMPLATE = File.read('./templates/index.erb')
+  INDEX_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/index.erb'))
   def initialize(content_dir)
     @content_dir = content_dir
     build
@@ -104,7 +111,7 @@ class Site
     Whirly.status = 'Publishing pages'
     @pages.each { |page| page.publish(@categories.map { |category| category.name }) }
     Whirly.status = 'Publishing homepage'
-    File.write('public/index.html', ERB.new(INDEX_TEMPLATE).result(binding))
+    File.write(File.join(PUBLISH_DIR, '/index.html'), ERB.new(INDEX_TEMPLATE).result(binding))
   end
   
   private
@@ -119,7 +126,7 @@ class Site
     Whirly.status = 'Building site'
     md_files.each do |path|
       lines = File.readlines(path)
-      page = Page.new(path.split('/')[1], lines)
+      page = Page.new(path.split('/').reverse[1], lines)
       category_to_pages[page.category] = category_to_pages.fetch(page.category, []).append(page).sort_by { |page| page.key }.reverse
       page.tags.each do |tag|
         tag_to_pages[tag] = tag_to_pages.fetch(tag, []).append(page).sort_by { |page| page.key }.reverse
@@ -147,9 +154,9 @@ end
 start = Time.now
 
 Whirly.start spinner: 'dots' do
-  Site.new('content').publish
-  FileUtils.mkdir_p('public/static/')
-  Dir.glob('static/*').each { |file| FileUtils.cp(file, 'public/static/') }
+  Site.new(CONTENT_DIR).publish
+  FileUtils.mkdir_p(File.join(PUBLISH_DIR, 'static'))
+  Dir.glob(File.join(SRC_DIR, 'static/*')).each { |file| FileUtils.cp(file, File.join(PUBLISH_DIR, 'static/')) }
 end
 
 puts "Done in #{(Time.now - start).to_i}s"
