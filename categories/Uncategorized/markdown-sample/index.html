@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="/ssg-rb/static/theme.css">
+    <link rel="stylesheet" href="/ssg-rb/static/custom.css">
+    <title>Markdown Syntax Guide</title>
+    </head>
+    <body>
+    <header>
+        <nav>
+          <ul><li><strong><a href="/ssg-rb">Sample Site</a></strong></li></ul>
+        <ul>
+            
+                <li><a href="/ssg-rb/categories/Uncategorized" style="padding-bottom: 0px; padding-top: 0px">Uncategorized</a></li>
+            
+        </ul>
+        </nav>
+    </header>
+    <main>
+        <hgroup>
+            <h3>Markdown Syntax Guide</h3>
+            <h4>Sample article showcasing basic Markdown syntax and formatting for HTML elements.&nbsp&nbsp|&nbsp&nbspMonday, 11 March 2019</h4>
+        </hgroup>
+    	<p><p>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.<br>
+&lt;!--more--&gt;</p>
+
+<h2>Headings</h2>
+
+<p>The following HTML <code>&lt;h1&gt;</code>—<code>&lt;h6&gt;</code> elements represent six levels of section headings. <code>&lt;h1&gt;</code> is the highest section level while <code>&lt;h6&gt;</code> is the lowest.</p>
+
+<h1>H1</h1>
+
+<h2>H2</h2>
+
+<h3>H3</h3>
+
+<h4>H4</h4>
+
+<h5>H5</h5>
+
+<h6>H6</h6>
+
+<h2>Paragraph</h2>
+
+<p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
+
+<p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.</p>
+
+<h2>Blockquotes</h2>
+
+<p>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a <code>footer</code> or <code>cite</code> element, and optionally with in-line changes such as annotations and abbreviations.</p>
+
+<h4>Blockquote without attribution</h4>
+
+<blockquote>
+<p>Tiam, ad mint andaepu dandae nostion secatur sequo quae.<br>
+<strong>Note</strong> that you can use <em>Markdown syntax</em> within a blockquote.</p>
+</blockquote>
+
+<h4>Blockquote with attribution</h4>
+
+<blockquote>
+<p>Don&#39;t communicate by sharing memory, share memory by communicating.<br>
+— Rob Pike[^1]</p>
+</blockquote>
+
+<p>[^1]: The above quote is excerpted from Rob Pike&#39;s <a href="https://www.youtube.com/watch?v=PAAkCSZUG1c">talk</a> during Gopherfest, November 18, 2015.</p>
+
+<h2>Tables</h2>
+
+<p>Tables aren&#39;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.</p>
+
+<p>Name | Age<br>
+--------|------<br>
+    Bob | 27<br>
+  Alice | 23</p>
+
+<h4>Inline Markdown within tables</h4>
+
+<p>| Inline&nbsp;&nbsp;&nbsp;     | Markdown&nbsp;&nbsp;&nbsp;  | In&nbsp;&nbsp;&nbsp;                | Table      |<br>
+| ---------- | --------- | ----------------- | ---------- |<br>
+| <em>italics</em>  | <strong>bold</strong>  | ~~strikethrough~~&nbsp;&nbsp;&nbsp; | <code>code</code>     |</p>
+
+<h2>Code Blocks</h2>
+
+<h4>Code block with backticks</h4>
+<div class="highlight"><pre class="highlight html"><code>html
+<span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Example HTML5 Document<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Test<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<h4>Code block indented with four spaces</h4>
+<div class="highlight"><pre class="highlight html"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Example HTML5 Document<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Test<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<h4>Code block with Hugo&#39;s internal highlight shortcode</h4>
+
+<p>{{&lt; highlight html &gt;}}<br>
+&lt;!DOCTYPE html&gt;<br>
+<br>
+<br>
+  <br>
+  Example HTML5 Document<br>
+<br>
+<br>
+  Test<br>
+<br>
+<br>
+{{&lt; /highlight &gt;}}</p>
+
+<h2>List Types</h2>
+
+<h4>Ordered List</h4>
+
+<ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ol>
+
+<h4>Unordered List</h4>
+
+<ul>
+<li>List item</li>
+<li>Another item</li>
+<li>And another item</li>
+</ul>
+
+<h4>Nested list</h4>
+
+<ul>
+<li>Item</li>
+<li>First Sub-item</li>
+<li>Second Sub-item</li>
+</ul>
+
+<h2>Other Elements — abbr, sub, sup, kbd, mark</h2>
+
+<p>GIF is a bitmap image format.</p>
+
+<p>H2O</p>
+
+<p>Xn + Yn = Zn</p>
+
+<p>Press CTRL+ALT+Delete to end the session.</p>
+
+<p>Most salamanders are nocturnal, and hunt for insects, worms, and other small creatures.</p>
+</p>
+        <footer>
+            <nav>
+              <ul>
+		
+                    <li>Tags: </li>
+                    
+		        <li><a href="/ssg-rb/tags/markdown">markdown</a></li>
+		    
+		        <li><a href="/ssg-rb/tags/css">css</a></li>
+		    
+		        <li><a href="/ssg-rb/tags/html">html</a></li>
+		    
+		        <li><a href="/ssg-rb/tags/themes">themes</a></li>
+		    
+		
+              </ul>
+            </nav>
+        </footer>
+    </main>
+</html>
