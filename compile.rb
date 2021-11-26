@@ -11,6 +11,14 @@ class HTML < Redcarpet::Render::HTML
   include Rouge::Plugins::Redcarpet
 end
 
+if ARGV.length < 2 then 
+    puts "Usage: ruby compile.rb CONTENT_DIR PUBLISH_DIR"
+    puts
+    puts "CONTENT_DIR: Relative to the directory where this script is located"
+    puts "PUBLISH_DIR: Absolute path of the directory where the site will be published"
+    exit
+end
+
 SRC_DIR = File.expand_path('../', __FILE__)
 CONTENT_DIR = File.join(SRC_DIR, ARGV[0])
 PUBLISH_DIR = ARGV[1]
