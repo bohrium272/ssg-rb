@@ -5,7 +5,6 @@ require 'fileutils'
 require 'erb'
 require 'toml'
 require 'time'
-require 'whirly'
 
 class HTML < Redcarpet::Render::HTML
   include Rouge::Plugins::Redcarpet
@@ -19,6 +18,7 @@ if ARGV.length < 2 then
     exit
 end
 
+SITE_ROOT = 'ssg-rb'
 SRC_DIR = File.expand_path('../', __FILE__)
 CONTENT_DIR = File.join(SRC_DIR, ARGV[0])
 PUBLISH_DIR = ARGV[1]
@@ -26,9 +26,10 @@ PUBLISH_DIR = ARGV[1]
 class Category
   attr_reader :name, :pages
   CATEGORY_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/category.erb'))
-  def initialize(name, pages)
+  def initialize(name, pages, site_root)
     @name = name
     @pages = pages
+    @site_root = site_root
   end
 
   def publish(categories)
@@ -39,9 +40,10 @@ end
 
 class Tag
   TAGS_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/tags.erb'))
-  def initialize(name, pages)
+  def initialize(name, pages, site_root)
     @name = name
     @pages = pages
+    @site_root = site_root
   end
 
   def publish(categories)
@@ -53,9 +55,10 @@ end
 class Page
   attr_reader :title, :description, :category, :date, :key, :path, :href, :tags, :name
   PAGE_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/page.erb'))
-  def initialize(name, lines)
+  def initialize(name, lines, site_root)
     @name = name
     @lines = lines
+    @site_root = site_root
     @markdown = Redcarpet::Markdown.new(HTML.new(filter_html: true, hard_wrap: true), fenced_code_blocks: true, highlight: true)
     build
   end
@@ -106,19 +109,16 @@ end
 
 class Site
   INDEX_TEMPLATE = File.read(File.join(SRC_DIR, 'templates/index.erb'))
-  def initialize(content_dir)
+  def initialize(content_dir, site_root)
     @content_dir = content_dir
+    @site_root = site_root
     build
   end
 
   def publish
-    Whirly.status = 'Publishing categories'
     @categories.each { |category| category.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing tags'
     @tags.each { |tag| tag.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing pages'
     @pages.each { |page| page.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing homepage'
     File.write(File.join(PUBLISH_DIR, '/index.html'), ERB.new(INDEX_TEMPLATE).result(binding))
   end
   
@@ -131,10 +131,9 @@ class Site
 
     all_pages = []
 
-    Whirly.status = 'Building site'
     md_files.each do |path|
       lines = File.readlines(path)
-      page = Page.new(path.split('/').reverse[1], lines)
+      page = Page.new(path.split('/').reverse[1], lines, @site_root)
       category_to_pages[page.category] = category_to_pages.fetch(page.category, []).append(page).sort_by { |page| page.key }.reverse
       page.tags.each do |tag|
         tag_to_pages[tag] = tag_to_pages.fetch(tag, []).append(page).sort_by { |page| page.key }.reverse
@@ -144,12 +143,12 @@ class Site
 
     all_categories = []
     category_to_pages.each do |category, pages|
-      all_categories.append(Category.new(category, pages))
+      all_categories.append(Category.new(category, pages, @site_root))
     end
 
     all_tags = []
     tag_to_pages.each do |tag, pages|
-      all_tags.append(Tag.new(tag, pages))
+      all_tags.append(Tag.new(tag, pages, @site_root))
     end
 
     @categories = all_categories
@@ -161,10 +160,8 @@ end
 
 start = Time.now
 
-Whirly.start spinner: 'dots' do
-  Site.new(CONTENT_DIR).publish
-  FileUtils.mkdir_p(File.join(PUBLISH_DIR, 'static'))
-  Dir.glob(File.join(SRC_DIR, 'static/*')).each { |file| FileUtils.cp(file, File.join(PUBLISH_DIR, 'static/')) }
-end
+Site.new(CONTENT_DIR, SITE_ROOT).publish
+FileUtils.mkdir_p(File.join(PUBLISH_DIR, 'static'))
+Dir.glob(File.join(SRC_DIR, 'static/*')).each { |file| FileUtils.cp(file, File.join(PUBLISH_DIR, 'static/')) }
 
 puts "Done in #{(Time.now - start).to_i}s"

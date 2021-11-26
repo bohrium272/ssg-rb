@@ -3,6 +3,8 @@ ssg-rb
 
 Yet another static site generator, built to get along well with classless CSS!
 
+[Demo Site with Pico.css as theme!](https://bohrium272.github.io/ssg-rb)
+
 ### About
 
 * Yes this is yet another static site generator! 
