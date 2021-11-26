@@ -5,7 +5,6 @@ require 'fileutils'
 require 'erb'
 require 'toml'
 require 'time'
-require 'whirly'
 
 class HTML < Redcarpet::Render::HTML
   include Rouge::Plugins::Redcarpet
@@ -112,13 +111,9 @@ class Site
   end
 
   def publish
-    Whirly.status = 'Publishing categories'
     @categories.each { |category| category.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing tags'
     @tags.each { |tag| tag.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing pages'
     @pages.each { |page| page.publish(@categories.map { |category| category.name }) }
-    Whirly.status = 'Publishing homepage'
     File.write(File.join(PUBLISH_DIR, '/index.html'), ERB.new(INDEX_TEMPLATE).result(binding))
   end
   
@@ -131,7 +126,6 @@ class Site
 
     all_pages = []
 
-    Whirly.status = 'Building site'
     md_files.each do |path|
       lines = File.readlines(path)
       page = Page.new(path.split('/').reverse[1], lines)
@@ -161,10 +155,8 @@ end
 
 start = Time.now
 
-Whirly.start spinner: 'dots' do
-  Site.new(CONTENT_DIR).publish
-  FileUtils.mkdir_p(File.join(PUBLISH_DIR, 'static'))
-  Dir.glob(File.join(SRC_DIR, 'static/*')).each { |file| FileUtils.cp(file, File.join(PUBLISH_DIR, 'static/')) }
-end
+Site.new(CONTENT_DIR).publish
+FileUtils.mkdir_p(File.join(PUBLISH_DIR, 'static'))
+Dir.glob(File.join(SRC_DIR, 'static/*')).each { |file| FileUtils.cp(file, File.join(PUBLISH_DIR, 'static/')) }
 
 puts "Done in #{(Time.now - start).to_i}s"
