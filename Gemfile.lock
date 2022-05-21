@@ -1,0 +1,22 @@
+GEM
+  specs:
+    parslet (2.0.0)
+    redcarpet (3.5.1)
+    rouge (3.28.0)
+    toml (0.3.0)
+      parslet (>= 1.8.0, < 3.0.0)
+    unicode-display_width (2.1.0)
+    whirly (0.3.0)
+      unicode-display_width (>= 1.1)
+
+PLATFORMS
+  x86_64-linux
+
+DEPENDENCIES
+  redcarpet
+  rouge
+  toml
+  whirly
+
+BUNDLED WITH
+   2.3.12

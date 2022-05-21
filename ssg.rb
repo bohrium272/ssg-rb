@@ -6,9 +6,7 @@ require 'erb'
 require 'toml'
 require 'time'
 
-class HTML < Redcarpet::Render::HTML
-  include Rouge::Plugins::Redcarpet
-end
+require_relative 'renderer'
 
 if ARGV.length < 2 then 
     puts "Usage: ruby compile.rb CONTENT_DIR PUBLISH_DIR"
@@ -18,7 +16,7 @@ if ARGV.length < 2 then
     exit
 end
 
-SITE_ROOT = 'ssg-rb'
+SITE_ROOT = ''
 SRC_DIR = File.expand_path('../', __FILE__)
 CONTENT_DIR = File.join(SRC_DIR, ARGV[0])
 PUBLISH_DIR = ARGV[1]
