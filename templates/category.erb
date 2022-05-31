@@ -3,17 +3,17 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link rel="stylesheet" href="/<%= @site_root %>/static/theme.css">
-    <link rel="stylesheet" href="/<%= @site_root %>/static/custom.css">
+	<link rel="stylesheet" href="<%= @site_root %>/static/theme.css">
+    <link rel="stylesheet" href="<%= @site_root %>/static/custom.css">
     <title><%= name.capitalize %></title>
     </head>
     <body>
     <header>
         <nav>
-          <ul><li><strong><a href="/<%= @site_root %>">Sample Site</a></strong></li></ul>
+          <ul><li><strong><a href="<%= @site_root %>">Sample Site</a></strong></li></ul>
 	  <ul>
             <% categories.each do |category| %>
-                <li><a href="/<%= @site_root %>/categories/<%= category %>" style="padding-bottom: 0px; padding-top: 0px"><%= category.capitalize %></a></li>
+                <li><a href="<%= @site_root %>/categories/<%= category %>" style="padding-bottom: 0px; padding-top: 0px"><%= category.capitalize %></a></li>
             <% end %>
         </ul>
         </nav>
@@ -23,7 +23,7 @@
     <ul>
     <h2> <%= name.capitalize %> </h2>
     <% pages.each do |page| %>
-        <li><a href="/<%= @site_root %>/<%= page.href %>"><%= page.title %></a>&nbsp<em><%= page.date %></em></li>
+        <li><a href="<%= @site_root %>/<%= page.href %>"><%= page.title %></a>&nbsp<em><%= page.date %></em></li>
     <% end %>
     </ul>
     </body>
